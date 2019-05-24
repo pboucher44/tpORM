@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user",
-        uniqueConstraints = {@UniqueConstraint(columnNames = "email")},
+        uniqueConstraints = {@UniqueConstraint(columnNames = "email"),@UniqueConstraint(columnNames = "pseudo")},
         indexes = @Index(columnList = "email"))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User implements Serializable {
@@ -22,16 +22,15 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
     private String email;
+    private String motDePasse;
+    private String pseudo;
     private Date birthday;
     @Formula("DATEDIFF('YEAR',birthday,now())")
     private int age;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Tweet> tweets;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "follower", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "follower_id")})
-    private List<User> followers;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private List<Message> messages;
 
     public long getId() {
         return id;
@@ -57,15 +56,15 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public List<Tweet> getTweets() {
-        if (this.tweets == null) {
-            this.tweets = new ArrayList<>();
+    public List<Message> getMessages() {
+        if (this.messages == null) {
+            this.messages = new ArrayList<>();
         }
-        return tweets;
+        return messages;
     }
 
-    public void setTweets(List<Tweet> tweets) {
-        this.tweets = tweets;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     public String getEmail() {
@@ -84,16 +83,23 @@ public class User implements Serializable {
         this.birthday = birthday;
     }
 
-
-    @Transient
     public int getAge() {
         return age;
     }
 
-    public List<User> getFollowers() {
-        if (this.followers == null) {
-            this.followers = new ArrayList<>();
-        }
-        return followers;
-    }
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+
+	public void setMotDePasse(String motDePasse) {
+		this.motDePasse = motDePasse;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
 }

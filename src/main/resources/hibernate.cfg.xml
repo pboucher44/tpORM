@@ -15,8 +15,9 @@
         <property name="current_session_context_class">thread</property>
 
         <mapping class="fr.epsi.model.User"/>
-        <mapping class="fr.epsi.model.Tweet"/>
+        <mapping class="fr.epsi.model.Message"/>
         <mapping class="fr.epsi.model.Admin"/>
+        <mapping class="fr.epsi.model.Channel"/>
 
     </session-factory>
 </hibernate-configuration>
